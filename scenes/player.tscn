@@ -1,0 +1,67 @@
+[gd_scene format=3 uid="uid://ct4yacyqkfgo1"]
+
+[ext_resource type="Script" uid="uid://cir0triojmb8q" path="res://Scripts/player.gd" id="1_t0xh4"]
+[ext_resource type="Script" uid="uid://do78u66fs5iqf" path="res://Scripts/CameraMovement.gd" id="5_pxu3x"]
+[ext_resource type="PackedScene" uid="uid://dgytd15xu4fd0" path="res://assets/characters/somchai/model/Somchai_rigged.glb" id="5_qlg0r"]
+[ext_resource type="ArrayMesh" path="res://assets/Resources/cloud.res" id="6_nkgvq"]
+[ext_resource type="AudioStream" uid="uid://doaf1pgrt238l" path="res://assets/Audio/SFX/walking.ogg" id="7_asqdb"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_oo8ef"]
+radius = 0.39
+height = 1.78
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_02pkc"]
+diffuse_mode = 2
+specular_mode = 2
+metallic_specular = 0.0
+
+[sub_resource type="Curve" id="Curve_ooin1"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.236318, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[node name="Player" type="CharacterBody3D" unique_id=684895680 groups=["Player"]]
+script = ExtResource("1_t0xh4")
+jump_force = 6.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=710168579]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.89, 0)
+shape = SubResource("CapsuleShape3D_oo8ef")
+
+[node name="Gimbal" type="Node3D" parent="." unique_id=1967685306]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+script = ExtResource("5_pxu3x")
+
+[node name="Camera3D" type="Camera3D" parent="Gimbal" unique_id=1373702904]
+transform = Transform3D(1, -1.3038483e-08, 1.30434654e-14, 1.1403706e-08, 0.87461984, 0.48480967, -6.321193e-09, -0.48480967, 0.87461984, 0, 5.2, 8.4)
+current = true
+fov = 64.0
+
+[node name="ParticleTrail" type="CPUParticles3D" parent="." unique_id=1569908453]
+material_override = SubResource("StandardMaterial3D_02pkc")
+emitting = false
+amount = 30
+mesh = ExtResource("6_nkgvq")
+emission_shape = 1
+emission_sphere_radius = 0.2
+particle_flag_align_y = true
+direction = Vector3(0, 0, 0)
+gravity = Vector3(0, 0.1, 0)
+scale_amount_min = 0.75
+scale_amount_curve = SubResource("Curve_ooin1")
+
+[node name="Footsteps" type="AudioStreamPlayer3D" parent="." unique_id=1048027461]
+stream = ExtResource("7_asqdb")
+volume_db = -17.0
+pitch_scale = 0.75
+
+[node name="Visual" type="Node3D" parent="." unique_id=313307204]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0, 0)
+
+[node name="Juice" type="Node3D" parent="Visual" unique_id=1070232129]
+
+[node name="Motion" type="Node3D" parent="Visual/Juice" unique_id=2122382514]
+
+[node name="Alignment" type="Node3D" parent="Visual/Juice/Motion" unique_id=968078721]
+
+[node name="Somchai" type="Node3D" parent="Visual/Juice/Motion/Alignment" unique_id=1678980288 instance=ExtResource("5_qlg0r")]
